@@ -20,14 +20,14 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem -p ${{ secrets.LIGHTSAIL_PORT }} ${{ secrets.LIGHTSAIL_USER }}@${{ secrets.LIGHTSAIL_HOST }} << 'EOF'
             echo "🛑 Stopping existing Redis container if exists..."
-            docker stop redis_server || true
-            docker rm redis_server || true
+            sudo docker stop redis_server || true
+            sudo docker rm redis_server || true
 
             echo "📥 Pulling Redis 6 image..."
-            docker pull redis:6
+            sudo docker pull redis:6
 
             echo "🚀 Running Redis 6 container..."
-            docker run -d \
+            sudo docker run -d \
               --name redis_server \
               -p 6379:6379 \
               --memory="512m" \
