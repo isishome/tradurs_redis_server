@@ -20,20 +20,25 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem -p ${{ secrets.LIGHTSAIL_PORT }} ${{ secrets.LIGHTSAIL_USER }}@${{ secrets.LIGHTSAIL_HOST }} << 'EOF'
             echo "🛑 Stopping existing Redis container if exists..."
-            sudo docker stop redis_server || true
-            sudo docker rm redis_server || true
+            sudo docker stop tradurs.redis || true
+            sudo docker rm tradurs.redis || true
 
             echo "📥 Pulling Redis 6 image..."
             sudo docker pull redis:6
 
             echo "🚀 Running Redis 6 container..."
             sudo docker run -d \
-              --name redis_server \
-              -p 6379:6379 \
+              --restart always \
+              --cpuset-cpus="1" \
+              --cpu-shares=1024 \
               --memory="512m" \
+              --publish 6379:6379 \
               --network tradurs-network \
+              --name tradurs.redis \
               redis:6 \
               redis-server --save "" --appendonly no
+            sudo docker system prune -f
+            sudo docker buildx prune -f
 
             echo "✅ Redis 6 is running on port 6379"
           EOF
