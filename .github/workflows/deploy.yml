@@ -31,6 +31,7 @@ jobs:
               --name redis_server \
               -p 6379:6379 \
               --memory="512m" \
+              --network tradurs-network \
               redis:6 \
               redis-server --save "" --appendonly no
 
