@@ -31,12 +31,13 @@ jobs:
               --restart always \
               --cpuset-cpus="1" \
               --cpu-shares=1024 \
-              --memory="512m" \
+              --memory="128m" \
+              --memory-swap="128m" \
               --publish 6379:6379 \
               --network tradurs-network \
               --name tradurs.redis \
               redis:6 \
-              redis-server --save "" --appendonly no
+              redis-server --save "" --appendonly no --maxmemory 96mb --maxmemory-policy volatile-ttl
             sudo docker system prune -f
             sudo docker buildx prune -f
 
