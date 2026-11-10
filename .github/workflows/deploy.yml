@@ -33,7 +33,6 @@ jobs:
               --cpu-shares=1024 \
               --memory="128m" \
               --memory-swap="128m" \
-              --publish 6379:6379 \
               --network tradurs-network \
               --name tradurs.redis \
               redis:6 \
